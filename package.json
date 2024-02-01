@@ -1,0 +1,65 @@
+{
+  "name": "@builtwithjavascript/theme-system",
+  "version": "0.1.0",
+  "description": "A framework agnostic theme system based on CSS variables.",
+  "author": "Damiano Fusco",
+  "license": "MIT",
+  "type": "module",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/builtwithjavascript/theme-system.git"
+  },
+  "bugs": {
+    "url": "https://github.com/builtwithjavascript/theme-system/issues"
+  },
+  "homepage": "https://github.com/builtwithjavascript/theme-system#readme",
+  "keywords": [
+    "theme, css, styling, css variables, large scale apps, vue, react, svelte, nuxt, next, node"
+  ],
+  "scripts": {
+    "dev": "vite",
+    "build-types": "tsc src/main.ts --esModuleInterop --declaration --emitDeclarationOnly --outDir dist",
+    "build": "tsc --esModuleInterop && vite build && npm run build-types",
+    "pub": "npm publish --access public",
+    "test": "TESTING=true vitest run",
+    "test-watch": "TESTING=true vitest watch",
+    "pretty": "prettier -w \"./src/**/*.ts\"",
+    "version-patch": "npm run pretty; npm version patch -m \"Patch version\"",
+    "preversion": "npm run test",
+    "version": "npm run build",
+    "postversion": "git push"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "pretty-quick --staged \"./src/**/*.ts\""
+    }
+  },
+  "devDependencies": {
+    "@types/jest": "^29.5.11",
+    "@types/node": "^20.11.15",
+    "colorjs.io": "^0.4.5",
+    "husky": "^9.0.7",
+    "jsdom": "^24.0.0",
+    "prettier": "^3.2.4",
+    "pretty-quick": "^4.0.0",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.3.3",
+    "vite": "^5.0.12",
+    "vitest": "^1.2.2"
+  },
+  "files": [
+    "dist"
+  ],
+  "types": "dist/theme-system/index.d.ts",
+  "main": "dist/theme-system.umd.js",
+  "module": "dist/theme-system.es.js",
+  "exports": {
+    ".": {
+      "import": [
+        "./dist/theme-system.es.js"
+      ],
+      "require": "./dist/theme-system.umd.js"
+    },
+    "./package.json": "./package.json"
+  }
+}
