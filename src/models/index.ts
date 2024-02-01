@@ -22,6 +22,7 @@ export type TUpdateCategoryHex = (
 export type TConvertHexValue = (hexValue: string, useOkLch: boolean) => string[]
 
 export type TUpdateDocumentStyleProp = (
+  cssVarPrefix: string,
   useOkLch: boolean,
   key: string,
   hexValue: string,
@@ -29,6 +30,7 @@ export type TUpdateDocumentStyleProp = (
 ) => void
 
 export type TComputeStyleSheetContent = (
-  selectedCategories: ICategoryOption[],
-  useOkLch: boolean
+  cssVarPrefix: string,
+  useOkLch: boolean,
+  selectedCategories: ICategoryOption[]
 ) => string

@@ -1,4 +1,5 @@
 const buildCssAttributeColorExpression = (
+  cssVarPrefix: string,
   useOkLch: boolean,
   categoryVariation: string,
   opacityValue?: number
@@ -8,9 +9,9 @@ const buildCssAttributeColorExpression = (
   // to set on a css property (i.e. background-color: oklch(var(--etc) var(--etc) var(--etc)) )
   if (useOkLch) {
     // builds the
-    let varL = `--wpt-${categoryVariation}-okl`
-    let varC = `--wpt-${categoryVariation}-okc`
-    let varH = `--wpt-${categoryVariation}-okh`
+    let varL = `--${cssVarPrefix}-${categoryVariation}-okl`
+    let varC = `--${cssVarPrefix}-${categoryVariation}-okc`
+    let varH = `--${cssVarPrefix}-${categoryVariation}-okh`
     const result = `oklch( var(${varL}) var(${varC}) var(${varH}) )`
     if (opacityValue === undefined) {
       return result
@@ -19,9 +20,9 @@ const buildCssAttributeColorExpression = (
     return `oklch( var(${varH}) var(${varC}) var(${varH}) / ${opacityValue} )`
   } else {
     // build hsl() expression and return it
-    let varH = `--wpt-${categoryVariation}-h`
-    let varS = `--wpt-${categoryVariation}-s`
-    let varL = `--wpt-${categoryVariation}-l`
+    let varH = `--${cssVarPrefix}-${categoryVariation}-h`
+    let varS = `--${cssVarPrefix}-${categoryVariation}-s`
+    let varL = `--${cssVarPrefix}-${categoryVariation}-l`
     const result = `hsl( var(${varH}) var(${varS}) var(${varL}) )`
     if (opacityValue === undefined) {
       return result
@@ -30,7 +31,11 @@ const buildCssAttributeColorExpression = (
   }
 }
 
-export const useCssVarsUtils = () => {
+interface IUseCssVarsUtils {
+  buildCssAttributeColorExpression: typeof buildCssAttributeColorExpression
+}
+
+export const useCssVarsUtils = (): IUseCssVarsUtils => {
   return {
     buildCssAttributeColorExpression
   }

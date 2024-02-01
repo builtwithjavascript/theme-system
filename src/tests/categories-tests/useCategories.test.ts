@@ -7,20 +7,15 @@ describe('useCategories', () => {
   })
 
   describe('getInitialCategoryOptions', () => {
-
     it(`should return initial cateogry options`, () => {
       const results = useCategories().getInitialCategoryOptions()
       expect(results).toBeDefined()
       expect(results).toHaveLength(12)
     })
-
   })
 
   describe('initCategoryOption', () => {
-
-    const {
-      initCategoryOption
-    } = useCategories()
+    const { initCategoryOption } = useCategories()
 
     it(`should return an instance of a new ICategoryOption`, () => {
       const result = initCategoryOption('test')
@@ -34,15 +29,10 @@ describe('useCategories', () => {
       expect(result.focusHex).toEqual('#ffff00')
       expect(result.contentHex).toEqual('#000000')
     })
-
   })
 
   describe('updateCategoryHex', () => {
-
-    const {
-      initCategoryOption,
-      updateCategoryHex
-    } = useCategories()
+    const { initCategoryOption, updateCategoryHex } = useCategories()
 
     it(`should set the category hexValue value as expected`, () => {
       const category = initCategoryOption('test')
@@ -75,6 +65,5 @@ describe('useCategories', () => {
       expect(result).toBeDefined()
       expect(result.focusHex).toEqual(value)
     })
-
   })
 })

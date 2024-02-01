@@ -12,6 +12,7 @@ const cleanUpWhiteSpace = (input: string) => {
 }
 
 const privateComputeStyleSheetContent = (
+  cssVarPrefix: string,
   selectedCategories: ICategoryOption[],
   buildCssVarExpression: (input: string) => string
 ) => {
@@ -44,7 +45,7 @@ const privateComputeStyleSheetContent = (
         .focus\:ring-${name}:focus,
         .active\:ring-${name}:active,
         .ring-${name} {
-          --wpt-ring-color: ${func(name)};
+          --${cssVarPrefix}-ring-color: ${func(name)};
         }`),
       // bg-invert uses the [category]-content value for "background-color"
       cleanUpWhiteSpace(`
@@ -71,11 +72,11 @@ const privateComputeStyleSheetContent = (
           }`),
         cleanUpWhiteSpace(`
           .ring-${name} {
-            --wpt-ring-color: ${func(`${name}-focus`)};
+            --${cssVarPrefix}-ring-color: ${func(`${name}-focus`)};
           }`),
         cleanUpWhiteSpace(`
           .ring-offset-${name} {
-            --wpt-ring-offset-color: ${func(`${name}-focus`)};
+            --${cssVarPrefix}-ring-offset-color: ${func(`${name}-focus`)};
           }`)
       )
     }
@@ -97,9 +98,9 @@ const privateComputeStyleSheetContent = (
   const allResults = [
     `
     .focus\:ring-2:focus {
-        --tw-ring-offset-shadow: var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--wpt-ring-offset-color);
-        --tw-ring-shadow: var(--tw-ring-inset) 0 0 0 calc(2px + var(--tw-ring-offset-width)) var(--wpt-ring-color);
-        box-shadow: var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow, 0 0 #0000);
+        --${cssVarPrefix}-ring-offset-shadow: var(--${cssVarPrefix}-ring-inset) 0 0 0 var(--${cssVarPrefix}-ring-offset-width) var(--${cssVarPrefix}-ring-offset-color);
+        --${cssVarPrefix}-ring-shadow: var(--${cssVarPrefix}-ring-inset) 0 0 0 calc(2px + var(--${cssVarPrefix}-ring-offset-width)) var(--${cssVarPrefix}-ring-color);
+        box-shadow: var(--${cssVarPrefix}-ring-offset-shadow), var(--${cssVarPrefix}-ring-shadow), var(--${cssVarPrefix}-shadow, 0 0 #0000);
     }
     `,
     mainClasses.join('\n'),
@@ -116,15 +117,16 @@ const privateComputeStyleSheetContent = (
 }
 
 const privateUpdateDocumentStyleProp = (
-  convertHexValue: TConvertHexValue,
+  cssVarPrefix: string,
   useOkLch: boolean,
+  convertHexValue: TConvertHexValue,
   key: string,
   hexValue: string,
   state?: string
 ) => {
   const valueArr = convertHexValue(hexValue, useOkLch)
-  // we end up building something like "--wpt-category-l" (for hsl)
-  // or like "--wpt-category-okl" (for oklch)
+  // we end up building something like "--bwj-category-l" (for hsl)
+  // or like "--bwj-category-okl" (for oklch)
   // since this values are coming from an array
   // that will be either like [h,s,l] or [l,c,h],
   // we need to use these dynamic postfix to build our expression dynamically
@@ -135,13 +137,13 @@ const privateUpdateDocumentStyleProp = (
   // console.log('updateDocumentStyleProp: TODO', key, hexValue, oklch, oklchArr)
   const documentStyle = document.documentElement.style
   if (!state) {
-    documentStyle.setProperty(`--wpt-${key}-${postfix0}`, `${valueArr[0]}`)
-    documentStyle.setProperty(`--wpt-${key}-${postfix1}`, `${valueArr[1]}`)
-    documentStyle.setProperty(`--wpt-${key}-${postfix2}`, `${valueArr[2]}`)
+    documentStyle.setProperty(`--${cssVarPrefix}-${key}-${postfix0}`, `${valueArr[0]}`)
+    documentStyle.setProperty(`--${cssVarPrefix}-${key}-${postfix1}`, `${valueArr[1]}`)
+    documentStyle.setProperty(`--${cssVarPrefix}-${key}-${postfix2}`, `${valueArr[2]}`)
   } else {
-    documentStyle.setProperty(`--wpt-${key}-${state}-${postfix0}`, `${valueArr[0]}`)
-    documentStyle.setProperty(`--wpt-${key}-${state}-${postfix1}`, `${valueArr[1]}`)
-    documentStyle.setProperty(`--wpt-${key}-${state}-${postfix2}`, `${valueArr[2]}`)
+    documentStyle.setProperty(`--${cssVarPrefix}-${key}-${state}-${postfix0}`, `${valueArr[0]}`)
+    documentStyle.setProperty(`--${cssVarPrefix}-${key}-${state}-${postfix1}`, `${valueArr[1]}`)
+    documentStyle.setProperty(`--${cssVarPrefix}-${key}-${state}-${postfix2}`, `${valueArr[2]}`)
   }
 }
 
@@ -155,18 +157,20 @@ export const useStyleSheetUtils = (): IUseStyleSheetUtils => {
 
   // wrapper around buildCssAttributeColorExpression so we can more easily pass ependencies
   const computeStyleSheetContent = (
-    selectedCategories: ICategoryOption[],
-    useOkLch: boolean
+    cssVarPrefix: string,
+    useOkLch: boolean,
+    selectedCategories: ICategoryOption[]
   ): string => {
     // wrapper around buildCssAttributeColorExpression so we can more easily pass ependencies
     const buildCssVarExpression = (input: string): string => {
-      return cssVarsUtils.buildCssAttributeColorExpression(useOkLch, input)
+      return cssVarsUtils.buildCssAttributeColorExpression(cssVarPrefix, useOkLch, input)
     }
 
-    return privateComputeStyleSheetContent(selectedCategories, buildCssVarExpression)
+    return privateComputeStyleSheetContent(cssVarPrefix, selectedCategories, buildCssVarExpression)
   }
 
   const updateDocumentStyleProp: TUpdateDocumentStyleProp = (
+    cssVarPrefix: string,
     useOkLch: boolean,
     key: string,
     hexValue: string,
@@ -174,7 +178,7 @@ export const useStyleSheetUtils = (): IUseStyleSheetUtils => {
   ) => {
     const { convertHexValue } = useColorConversion()
 
-    return privateUpdateDocumentStyleProp(convertHexValue, useOkLch, key, hexValue, state)
+    return privateUpdateDocumentStyleProp(cssVarPrefix, useOkLch, convertHexValue, key, hexValue, state)
   }
 
   return {
