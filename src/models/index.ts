@@ -11,6 +11,8 @@ export interface ICategoryOption {
   selected: boolean
 }
 
+export type TInitCategoryOption = (id: string) => ICategoryOption
+
 export type TUpdateCategoryHex = (
   category: ICategoryOption,
   hexValue: string,

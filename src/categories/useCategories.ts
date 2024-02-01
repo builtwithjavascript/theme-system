@@ -1,4 +1,17 @@
-import type { ICategoryOption, TUpdateCategoryHex } from '../models'
+import type { ICategoryOption, TInitCategoryOption, TUpdateCategoryHex } from '../models'
+
+const initCategoryOption: TInitCategoryOption = (id: string): ICategoryOption => {
+  return {
+    id,
+    hasHover: true,
+    hasFocus: true,
+    hexValue: '#ff9900',
+    hoverHex: '#ffff00',
+    focusHex: '#ffff00',
+    contentHex: '#000000',
+    selected: false
+  }
+}
 
 const getInitialCategoryOptions = (): ICategoryOption[] => {
   // the different categories of our theme
@@ -139,11 +152,13 @@ const updateCategoryHex: TUpdateCategoryHex = (
 interface IUseCategories {
   getInitialCategoryOptions: () => ICategoryOption[]
   updateCategoryHex: TUpdateCategoryHex
+  initCategoryOption: TInitCategoryOption
 }
 
 export const useCategories = (): IUseCategories => {
   return {
     getInitialCategoryOptions,
-    updateCategoryHex
+    updateCategoryHex,
+    initCategoryOption
   }
 }
