@@ -1,4 +1,4 @@
-import { useCategories } from '../../categories'
+import { useCategories } from '../../hooks/useCategories'
 
 describe('useCategories', () => {
   it(`should return instance`, () => {
@@ -23,47 +23,143 @@ describe('useCategories', () => {
       expect(result.id).toEqual('test')
       expect(result.hasHover).toEqual(true)
       expect(result.hasFocus).toEqual(true)
-      expect(result.selected).toEqual(false)
-      expect(result.hexValue).toEqual('#ff9900')
-      expect(result.hoverHex).toEqual('#ffff00')
-      expect(result.focusHex).toEqual('#ffff00')
-      expect(result.contentHex).toEqual('#000000')
+      expect(result.selected).toEqual(true)
+      expect(result._hex).toEqual('#ff3fd0')
+      expect(result._hoverHex).toEqual('#ff3fd0')
+      expect(result._focusHex).toEqual('#ff3fd0')
+      expect(result._contentHex).toEqual('#ffffff')
     })
   })
 
-  describe('updateCategoryHex', () => {
-    const { initCategoryOption, updateCategoryHex } = useCategories()
+  describe('updateCategoryFieldsFromHex', () => {
+    const { initCategoryOption, updateCategoryFieldsFromHex } = useCategories()
 
-    it(`should set the category hexValue value as expected`, () => {
+    it(`should set the category color fields values as expected`, () => {
       const category = initCategoryOption('test')
       const value = '#ab37a1'
-      const result = updateCategoryHex(category, value)
+      const result = updateCategoryFieldsFromHex(category, value)
       expect(result).toBeDefined()
-      expect(result.hexValue).toEqual(value)
+      expect(result._hex).toEqual(value)
     })
 
-    it(`should set the category contentHex value as expected`, () => {
+    it(`should set the category content color values as expected`, () => {
       const category = initCategoryOption('test')
       const value = '#ab37a1'
-      const result = updateCategoryHex(category, value, 'content')
+      const result = updateCategoryFieldsFromHex(category, value, 'content')
       expect(result).toBeDefined()
-      expect(result.contentHex).toEqual(value)
+      expect(result._contentHex).toEqual(value)
     })
 
-    it(`should set the category hoverHex value as expected`, () => {
+    it(`should set the category color hover values as expected`, () => {
       const category = initCategoryOption('test')
       const value = '#de98cc'
-      const result = updateCategoryHex(category, value, 'hover')
+      const result = updateCategoryFieldsFromHex(category, value, 'hover')
       expect(result).toBeDefined()
-      expect(result.hoverHex).toEqual(value)
+      expect(result._hoverHex).toEqual(value)
     })
 
-    it(`should set the category focusHex value as expected`, () => {
+    it(`should set the category color focus values as expected`, () => {
       const category = initCategoryOption('test')
       const value = '#de98cc'
-      const result = updateCategoryHex(category, value, 'focus')
+      const result = updateCategoryFieldsFromHex(category, value, 'focus')
       expect(result).toBeDefined()
-      expect(result.focusHex).toEqual(value)
+      expect(result._focusHex).toEqual(value)
+    })
+  })
+
+  describe('validateCategoryName', () => {
+    const { getInitialCategoryOptions, validateCategoryName } = useCategories()
+    const existingCategories = getInitialCategoryOptions()
+
+    describe('adding new category', () => {
+      const { initCategoryOption } = useCategories()
+      const newCategory = initCategoryOption('test')
+
+      it(`should return a blank error message when category name is valid`, () => {
+        const result = validateCategoryName(
+          existingCategories,
+          newCategory.uniqueId,
+          'newcategory'
+        )
+        expect(result).toHaveLength(0)
+      })
+
+      it(`should return a blank error message when category name contains characters that are not allowed`, () => {
+        const result = validateCategoryName(
+          existingCategories,
+          newCategory.uniqueId,
+          '_asd'
+        )
+        expect(result).toEqual('Name can only contain characters from "a" to "z".')
+      })
+
+      it(`should return a blank error message when category name is too short`, () => {
+        const result = validateCategoryName(existingCategories, newCategory.uniqueId, 'a')
+        expect(result).toEqual('Name must be between 3 and 20 characters.')
+      })
+
+      it(`should return a blank error message when category name is too long`, () => {
+        const result = validateCategoryName(
+          existingCategories,
+          newCategory.uniqueId,
+          Array(30).join('a')
+        )
+        expect(result).toEqual('Name must be between 3 and 20 characters.')
+      })
+    })
+
+    describe('updating existing category', () => {
+      it(`should return a blank error message when category name is valid`, () => {
+        const category = existingCategories[0]
+        const result = validateCategoryName(
+          existingCategories,
+          category.uniqueId,
+          'newcategory'
+        )
+        expect(result).toHaveLength(0)
+      })
+
+      it(`should return ta blank error message when category name has not changed`, () => {
+        const category = existingCategories[0]
+        const result = validateCategoryName(
+          existingCategories,
+          category.uniqueId,
+          'primary'
+        )
+        expect(result).toHaveLength(0)
+      })
+
+      it(`should return the expected error message when category name is in use by another category`, () => {
+        const category = existingCategories[0]
+        const result = validateCategoryName(
+          existingCategories,
+          category.uniqueId,
+          'secondary'
+        )
+        expect(result).toEqual('Name is already in use.')
+      })
+
+      it(`should return an error message when category name contains characters that are not allowed`, () => {
+        const category = existingCategories[0]
+        const result = validateCategoryName(existingCategories, category.uniqueId, '_asd')
+        expect(result).toEqual('Name can only contain characters from "a" to "z".')
+      })
+
+      it(`should return an error message when category name is too short`, () => {
+        const category = existingCategories[0]
+        const result = validateCategoryName(existingCategories, category.uniqueId, 'a')
+        expect(result).toEqual('Name must be between 3 and 20 characters.')
+      })
+
+      it(`should return the expected error message when category name is too long`, () => {
+        const category = existingCategories[0]
+        const result = validateCategoryName(
+          existingCategories,
+          category.uniqueId,
+          Array(30).join('a')
+        )
+        expect(result).toEqual('Name must be between 3 and 20 characters.')
+      })
     })
   })
 })

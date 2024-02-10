@@ -19,7 +19,7 @@
   "scripts": {
     "dev": "vite",
     "build-types": "tsc src/main.ts --esModuleInterop --declaration --emitDeclarationOnly --outDir dist",
-    "build": "tsc --esModuleInterop && vite build && npm run build-types",
+    "build": "tsc --esModuleInterop --downlevelIteration && vite build && npm run build-types",
     "pub": "npm publish --access public",
     "test": "TESTING=true vitest run",
     "test-watch": "TESTING=true vitest watch",
@@ -35,9 +35,10 @@
     }
   },
   "devDependencies": {
+    "@types/culori": "^2.1.0",
     "@types/jest": "^29.5.11",
     "@types/node": "^20.11.15",
-    "colorjs.io": "^0.4.5",
+    "culori": "^4.0.1",
     "husky": "^9.0.7",
     "jsdom": "^24.0.0",
     "prettier": "^3.2.4",
