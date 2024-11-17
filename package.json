@@ -1,6 +1,6 @@
 {
   "name": "@builtwithjavascript/theme-system",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "A framework agnostic theme system based on CSS variables.",
   "author": "Damiano Fusco",
   "license": "MIT",
