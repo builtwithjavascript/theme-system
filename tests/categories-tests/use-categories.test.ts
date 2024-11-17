@@ -1,4 +1,4 @@
-import { useCategories } from '../../hooks/use-categories'
+import { useCategories } from '../../src/use-categories'
 
 describe('useCategories', () => {
   it(`should return instance`, () => {

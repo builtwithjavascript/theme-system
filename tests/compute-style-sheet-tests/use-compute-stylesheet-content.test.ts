@@ -1,5 +1,5 @@
-import { useCategories } from '../../hooks/use-categories'
-import { useComputeStyleSheetContent } from '../../hooks/use-compute-stylesheet-content'
+import { useCategories } from '../../src/use-categories'
+import { useComputeStyleSheetContent } from '../../src/use-compute-stylesheet-content'
 
 describe('useComputeStyleSheetContent', () => {
   it(`instance should be defined`, () => {

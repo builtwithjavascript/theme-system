@@ -1,5 +1,12 @@
-import { TUpdateDocumentStyleProp } from '../models'
-import { useColorConversion } from './use-color-conversion'
+import { useColorConversion } from '../use-color-conversion'
+
+export type TUpdateDocumentStyleProp = (
+  cssVarPrefix: string,
+  useOkLch: boolean,
+  key: string,
+  strOklch: string,
+  state?: string
+) => void
 
 const updateDocumentStyleProp: TUpdateDocumentStyleProp = (
   cssVarPrefix: string,

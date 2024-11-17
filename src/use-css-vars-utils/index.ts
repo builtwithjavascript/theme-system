@@ -1,3 +1,11 @@
+import type { TKeyValue } from '../shared'
+
+interface IDocumentCssVarInfo {
+  id: string
+  hasHover: boolean
+  hasFocus: boolean
+}
+
 const buildCssAttributeColorExpression = (
   cssVarPrefix: string,
   useOkLch: boolean,
@@ -31,20 +39,9 @@ const buildCssAttributeColorExpression = (
   }
 }
 
-interface IDocumentCssVarInfo {
-  id: string
-  hasHover: boolean
-  hasFocus: boolean
-}
-
-interface TKeyValue {
-  key: string
-  value: string
-}
-
 // IMPORTANT: changes to the defaults require updating
 // the "excludeIds" array found in method "extractCategoryOption" (hook useCategories)
-const defaultCssVarsKeyValues: TKeyValue[] = [
+const defaultCssVarsKeyValues: TKeyValue<string>[] = [
   {
     key: '--bwj-text-opacity',
     //value: 'var(--tw-opacity, 1)',
@@ -125,14 +122,14 @@ const getDocumentCssVarsInfos = (): IDocumentCssVarInfo[] => {
   return tempResults //[...new Set(tempResults)]
 }
 
-const getDocumentCssVarsKeyValues = (): TKeyValue[] => {
+const getDocumentCssVarsKeyValues = (): TKeyValue<string>[] => {
   // use any to avoid TS build time error when using moduleResolution "Bundler"
   /// these two lines should work either way
-  //const distinct: string[] = [...new Set([...Object.values(document.getElementsByTagName('html')[0].style)])] as any
-  const distinct: string[] = [
+  //const distinctItems: string[] = [...new Set([...Object.values(document.getElementsByTagName('html')[0].style)])] as any
+  const distinctItems: string[] = [
     ...new Set([...Object.values(document.documentElement.style)])
   ]
-  const fromHtml: TKeyValue[] = distinct
+  const fromHtml: TKeyValue<string>[] = distinctItems
     .filter((k) => (k || '').trim().length > 0)
     .map((key) => {
       return {
@@ -144,11 +141,16 @@ const getDocumentCssVarsKeyValues = (): TKeyValue[] => {
   return [...defaultCssVarsKeyValues, ...fromHtml]
 }
 
-interface IUseCssVarsUtils {
-  defaultCssVarsKeyValues: typeof defaultCssVarsKeyValues
-  buildCssAttributeColorExpression: typeof buildCssAttributeColorExpression
-  getDocumentCssVarsInfos: typeof getDocumentCssVarsInfos
-  getDocumentCssVarsKeyValues: typeof getDocumentCssVarsKeyValues
+export interface IUseCssVarsUtils {
+  defaultCssVarsKeyValues: TKeyValue<string>[]
+  buildCssAttributeColorExpression: (
+    cssVarPrefix: string,
+    useOkLch: boolean,
+    categoryVariation: string,
+    opacityVar?: string
+  ) => string
+  getDocumentCssVarsInfos: () => IDocumentCssVarInfo[]
+  getDocumentCssVarsKeyValues: () => TKeyValue<string>[]
 }
 
 export const useCssVarsUtils = (): IUseCssVarsUtils => {

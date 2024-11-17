@@ -1,13 +1,7 @@
-import type {
-  ICategoryOption,
-  TInitCategoryOption,
-  TUpdateCategoryHex,
-  TValidateCategoryName
-} from '../models'
-import type { TKeyValue } from './shared'
-import { useColorConversion } from './use-color-conversion'
-import { useCssVarsUtils } from './use-css-vars-utils'
+import type { TKeyValue, ICategoryOption } from '../shared'
 
+import { useColorConversion } from '../use-color-conversion'
+import { useCssVarsUtils } from '../use-css-vars-utils'
 const { defaultCssVarsKeyValues } = useCssVarsUtils()
 
 // use this commented out code only to genered the initial categories
@@ -29,6 +23,26 @@ export const _uniqueId = (): string => {
 
   return `${ms}${str}`
 }
+
+type TInitCategoryOption = (
+  id: string,
+  options?: {
+    hasHover: boolean
+    hasFocus: boolean
+  }
+) => ICategoryOption
+
+type TUpdateCategoryHex = (
+  category: ICategoryOption,
+  strHex: string,
+  state?: string
+) => ICategoryOption
+
+type TValidateCategoryName = (
+  categories: ICategoryOption[],
+  uniqueId: string,
+  newName: string
+) => string
 
 const defaultCategories: ICategoryOption[] = [
   {
@@ -404,7 +418,7 @@ const validateCategoryName: TValidateCategoryName = (
   return ''
 }
 
-interface IUseCategories {
+export interface IUseCategories {
   getInitialCategoryOptions: () => ICategoryOption[]
   updateCategoryFieldsFromHex: TUpdateCategoryHex
   initCategoryOption: TInitCategoryOption

@@ -1,12 +1,12 @@
-import { converter, formatHex, parse } from 'culori'
 import type { Oklch, Hsl } from 'culori'
-import type {
-  TStringToStringArray,
-  TConvertHexValue,
-  TOklchStringFromHex,
-  THexStringFromOklchString
-} from '../models'
+import { converter, formatHex, parse } from 'culori'
 
+type TStringToStringArray = (value: string) => string[]
+type TConvertHexValue = (strHex: string, useOkLch: boolean) => string[]
+type TOklchStringFromHex = (strHex: string) => string
+type THexStringFromOklchString = (strOklch: string) => string
+
+// cache converters
 const oklchConverter = converter('oklch')
 const hslConverter = converter('hsl')
 
@@ -108,7 +108,7 @@ const hexStringFromOklchString = (input: string) => {
   return `${formatHex(parse(input))}`
 }
 
-interface IUseColorConvertion {
+export interface IUseColorConvertion {
   convertHexValue: TConvertHexValue
   oklchStringFromHex: TOklchStringFromHex
   oklchStringToLchArray: TStringToStringArray

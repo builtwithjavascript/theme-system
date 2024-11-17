@@ -1,4 +1,4 @@
-import { useCssVarsUtils } from '../../hooks/use-css-vars-utils'
+import { useCssVarsUtils } from '../../src/use-css-vars-utils'
 
 describe('useCssVarsUtils', () => {
   it(`instance should be defined`, () => {

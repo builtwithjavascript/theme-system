@@ -1,8 +1,6 @@
-import { ICategoryOption } from '../models'
-import { useCssVarsUtils } from './use-css-vars-utils'
-import { useScrollbarStyle } from './use-scrollbar-style'
-
-type TKeyValue = { key: string; value: string }
+import type { TKeyValue, ICategoryOption } from '../shared'
+import { useCssVarsUtils } from '../use-css-vars-utils'
+import { useScrollbarStyle } from '../use-scrollbar-style'
 
 // opacity vars
 const TEXT_OPACITY_VAR = `--bwj-text-opacity`
@@ -19,11 +17,11 @@ const _privateComputeStyleSheetContent = (
   // compute css classes
   const func = buildCssVarExpression
 
-  const mainClasses: TKeyValue[] = []
-  let opacityClasses: TKeyValue[] = []
-  const focusClasses: TKeyValue[] = []
-  let hoverClasses: TKeyValue[] = []
-  let groupHoverClasses: TKeyValue[] = []
+  const mainClasses: TKeyValue<string>[] = []
+  let opacityClasses: TKeyValue<string>[] = []
+  const focusClasses: TKeyValue<string>[] = []
+  let hoverClasses: TKeyValue<string>[] = []
+  let groupHoverClasses: TKeyValue<string>[] = []
 
   // content-opacity
   const opacities = [
@@ -302,7 +300,7 @@ const _privateComputeStyleSheetContent = (
     }
   })
 
-  const ringClasses: TKeyValue[] = [
+  const ringClasses: TKeyValue<string>[] = [
     {
       key: `
       .ring-2,
@@ -328,7 +326,10 @@ const _privateComputeStyleSheetContent = (
     }
   ]
 
-  const keyValueToCssClassString = (item: TKeyValue, tabs: number = 2): string => {
+  const keyValueToCssClassString = (
+    item: TKeyValue<string>,
+    tabs: number = 2
+  ): string => {
     if (!formatNicely) {
       return `${item.key} {${item.value}}`
     }
@@ -362,8 +363,15 @@ const _privateComputeStyleSheetContent = (
   return `${allClasses.map((c) => keyValueToCssClassString(c)).join(joinChar)}\n${mediaHover}`
 }
 
+type TComputeStyleSheetContent = (
+  cssVarPrefix: string,
+  useOkLch: boolean,
+  selectedCategories: ICategoryOption[],
+  formatNicely?: boolean
+) => string
+
 // wrapper around _privateComputeStyleSheetContent so we can more easily pass ependencies
-const computeStyleSheetContent = (
+const computeStyleSheetContent: TComputeStyleSheetContent = (
   cssVarPrefix: string,
   useOkLch: boolean,
   selectedCategories: ICategoryOption[],
@@ -389,7 +397,7 @@ const computeStyleSheetContent = (
 }
 
 interface IUseComputeStyleSheetContent {
-  computeStyleSheetContent: typeof computeStyleSheetContent
+  computeStyleSheetContent: TComputeStyleSheetContent
 }
 
 export const useComputeStyleSheetContent = (): IUseComputeStyleSheetContent => {

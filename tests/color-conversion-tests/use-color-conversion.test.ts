@@ -1,4 +1,4 @@
-import { useColorConversion } from '../../hooks/use-color-conversion'
+import { useColorConversion } from '../../src/use-color-conversion'
 
 describe('useColorConversion', () => {
   it(`instance should be defined`, () => {
