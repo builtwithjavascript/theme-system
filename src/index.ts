@@ -81,25 +81,8 @@ const _computeDocumentStyles = async (
 
 export type TSupportedColorSpaces = 'hsl' | 'oklch'
 
-export interface IThemeSystemOptions {
-  cssVarPrefix: string
-  colorSpace: TSupportedColorSpaces
-}
-
-export const useThemeSystem = (options?: IThemeSystemOptions) => {
-  const mergedOptions = {
-    cssVarPrefix: 'bwj',
-    colorSpace: 'oklch',
-    ...options
-  }
-
-  const { cssVarPrefix, colorSpace } = mergedOptions
-
-  const useOkLch = colorSpace === 'oklch'
-
+export const useThemeSystem = () => {
   return {
-    computeDocumentStyles: async (categories?: ICategoryOption[]): Promise<void> => {
-      return _computeDocumentStyles(cssVarPrefix, categories, useOkLch)
-    }
+    computeDocumentStyles: _computeDocumentStyles
   }
 }

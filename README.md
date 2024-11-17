@@ -1,6 +1,8 @@
 # @builtwithjavascript/theme-system
 A framework agnostic theme system based on CSS variables.
 
+Currently in development.
+
 [![npm version](https://badge.fury.io/js/@builtwithjavascript%2Ftheme-system.svg)](https://badge.fury.io/js/@builtwithjavascript%2Ftheme-system)
 
 ## code base
