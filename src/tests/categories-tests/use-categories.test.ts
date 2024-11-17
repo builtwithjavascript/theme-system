@@ -1,4 +1,4 @@
-import { useCategories } from '../../hooks/useCategories'
+import { useCategories } from '../../hooks/use-categories'
 
 describe('useCategories', () => {
   it(`should return instance`, () => {
@@ -10,7 +10,7 @@ describe('useCategories', () => {
     it(`should return initial cateogry options`, () => {
       const results = useCategories().getInitialCategoryOptions()
       expect(results).toBeDefined()
-      expect(results).toHaveLength(12)
+      expect(results).toHaveLength(13)
     })
   })
 
@@ -18,7 +18,10 @@ describe('useCategories', () => {
     const { initCategoryOption } = useCategories()
 
     it(`should return an instance of a new ICategoryOption`, () => {
-      const result = initCategoryOption('test')
+      const result = initCategoryOption('test', {
+        hasHover: true,
+        hasFocus: true
+      })
       expect(result).toBeDefined()
       expect(result.id).toEqual('test')
       expect(result.hasHover).toEqual(true)
@@ -27,7 +30,10 @@ describe('useCategories', () => {
       expect(result._hex).toEqual('#ff3fd0')
       expect(result._hoverHex).toEqual('#ff3fd0')
       expect(result._focusHex).toEqual('#ff3fd0')
-      expect(result._contentHex).toEqual('#ffffff')
+      expect(result.oklch).toEqual('oklch(0.7 0.27 340 / 1)')
+      expect(result.hoverOklch).toEqual('oklch(0.7 0.32 340 / 1)')
+      expect(result.focusOklch).toEqual('oklch(0.7 0.32 340 / 1)')
+      expect(result.contentOklch).toEqual('oklch(1 0 0 / 1)')
     })
   })
 

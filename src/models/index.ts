@@ -17,10 +17,16 @@ export interface ICategoryOption {
 
   selected: boolean
   flash: boolean
-  _original?: ICategoryOption | undefined
+  _initial?: ICategoryOption | undefined
 }
 
-export type TInitCategoryOption = (id: string) => ICategoryOption
+export type TInitCategoryOption = (
+  id: string,
+  options?: {
+    hasHover: boolean
+    hasFocus: boolean
+  }
+) => ICategoryOption
 
 export type TUpdateCategoryHex = (
   category: ICategoryOption,
@@ -37,6 +43,7 @@ export type TValidateCategoryName = (
 export type TStringToStringArray = (value: string) => string[]
 export type TConvertHexValue = (strHex: string, useOkLch: boolean) => string[]
 export type TOklchStringFromHex = (strHex: string) => string
+export type THexStringFromOklchString = (strOklch: string) => string
 
 export type TUpdateDocumentStyleProp = (
   cssVarPrefix: string,

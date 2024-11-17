@@ -2,7 +2,6 @@ const _styleElementId = 'bwj-themesystem'
 
 const updateHeadStyle = (styleSheetContent: string) => {
   let elStyle = document.getElementById(_styleElementId)
-  // console.log('updateHeadStyle existing elStyle', elStyle)
   if (!elStyle) {
     elStyle = document.createElement('style')
     elStyle.id = _styleElementId
@@ -17,7 +16,6 @@ const updateHeadStyle = (styleSheetContent: string) => {
 
 const getHeadStyle = (): string => {
   let elStyle = document.getElementById(_styleElementId)
-  // console.log('updateHeadStyle existing elStyle', elStyle)
   if (!elStyle) {
     console.warn('not found')
   }

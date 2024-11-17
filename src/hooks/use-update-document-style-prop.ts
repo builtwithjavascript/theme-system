@@ -1,5 +1,5 @@
 import { TUpdateDocumentStyleProp } from '../models'
-import { useColorConversion } from './useColorConversion'
+import { useColorConversion } from './use-color-conversion'
 
 const updateDocumentStyleProp: TUpdateDocumentStyleProp = (
   cssVarPrefix: string,
@@ -26,7 +26,6 @@ const updateDocumentStyleProp: TUpdateDocumentStyleProp = (
   const postfix1 = useOkLch ? `okc` : `s`
   const postfix2 = useOkLch ? `okh` : `l`
 
-  // console.log('updateDocumentStyleProp: TODO', key, strOklch, oklch, oklchArr)
   const documentStyle = document.documentElement.style
   if (!state) {
     documentStyle.setProperty(`--${cssVarPrefix}-${key}-${postfix0}`, `${valueArr[0]}`)
