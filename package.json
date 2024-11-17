@@ -1,6 +1,6 @@
 {
   "name": "@builtwithjavascript/theme-system",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "A framework agnostic theme system based on CSS variables.",
   "author": "Damiano Fusco",
   "license": "MIT",
@@ -24,7 +24,7 @@
     "test": "TESTING=true vitest run",
     "test-watch": "TESTING=true vitest watch",
     "pretty": "npx prettier -w \"./src/**/*.ts\"",
-    "pre-push": "npm run pretty; git add .; git commit -m \"Readme updates\";",
+    "pre-push": "npm run pretty; git add .; git commit -m \"Fixed package.json types references\";",
     "push": "git push",
     "version-patch": "npm run pretty; npm version patch -m \"Patch version\"",
     "preversion": "npm run test",
@@ -45,7 +45,7 @@
   "files": [
     "dist"
   ],
-  "types": "dist/theme-system/index.d.ts",
+  "types": "dist/index.d.ts",
   "main": "dist/theme-system.umd.js",
   "module": "dist/theme-system.es.js",
   "exports": {
@@ -53,7 +53,8 @@
       "import": [
         "./dist/theme-system.es.js"
       ],
-      "require": "./dist/theme-system.umd.js"
+      "require": "./dist/theme-system.umd.js",
+      "types": "./dist/index.d.ts"
     },
     "./package.json": "./package.json"
   }
